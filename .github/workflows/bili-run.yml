@@ -1,0 +1,22 @@
+name: BiliBiliTool Run
+
+on:
+  schedule:
+    - cron: '0 2 * * *'   # 每天凌晨2点运行（北京时间10点）
+  workflow_dispatch:       # 允许手动触发
+
+jobs:
+  run-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+      - name: Run BiliBiliTool
+        run: |
+          dotnet run --project src/BiliBiliTool/BiliBiliTool.csproj
+        env:
+          COOKIESTR: ${{ secrets.COOKIESTR }}
